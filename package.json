@@ -1,0 +1,14 @@
+{
+  "name": "sampts-rules-tests",
+  "private": true,
+  "scripts": {
+    "test:rules": "firebase emulators:exec --only database --project demo-sampts 'node --test test/rules/database.test.mjs'"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "firebase": "^12.19.0"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.13.6"
+  }
+}

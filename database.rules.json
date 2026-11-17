@@ -1,0 +1,127 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && newData.exists() && ((!data.exists() && newData.child('role').val() === 'student') || (data.exists() && newData.child('role').val() === data.child('role').val()))",
+        ".validate": "newData.hasChildren(['name','email','role'])",
+        "name": {
+          ".validate": "newData.isString()"
+        },
+        "email": {
+          ".validate": "newData.isString()"
+        },
+        "role": {
+          ".validate": "newData.val() === 'student' || newData.val() === 'advisor'"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "students": {
+      ".indexOn": [
+        "advisorId"
+      ],
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'advisor') && query.orderByChild === 'advisorId' && query.equalTo === auth.uid",
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || data.child('advisorId').val() === auth.uid)",
+        ".write": "auth != null && auth.uid === $uid && (root.child('users').child(auth.uid).child('role').val() === 'student') && newData.exists() && newData.child('advisorId').val() === data.child('advisorId').val()",
+        ".validate": "newData.hasChildren(['userId','studentNumber']) && newData.child('userId').val() === $uid",
+        "userId": {
+          ".validate": "newData.isString()"
+        },
+        "studentNumber": {
+          ".validate": "newData.isString()"
+        },
+        "advisorId": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "advisors": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('students').child(auth.uid).child('advisorId').val() === $uid)",
+        ".write": "auth != null && auth.uid === $uid && (root.child('users').child(auth.uid).child('role').val() === 'advisor') && newData.exists()",
+        ".validate": "newData.hasChildren(['userId','department']) && newData.child('userId').val() === $uid",
+        "userId": {
+          ".validate": "newData.isString()"
+        },
+        "department": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "projects": {
+      ".indexOn": [
+        "studentId",
+        "advisorId"
+      ],
+      ".read": "auth != null && ((query.orderByChild === 'studentId' || query.orderByChild === 'advisorId') && query.equalTo === auth.uid)",
+      "$id": {
+        ".read": "auth != null && (!data.exists() || data.child('studentId').val() === auth.uid || data.child('advisorId').val() === auth.uid)",
+        ".write": "auth != null && ((!data.exists() && newData.child('studentId').val() === auth.uid && (root.child('users').child(auth.uid).child('role').val() === 'student') && newData.child('advisorId').val() === root.child('students').child(auth.uid).child('advisorId').val() && root.child('users').child(newData.child('advisorId').val()).child('role').val() === 'advisor' && newData.child('status').val() === 'proposed') || (data.exists() && (data.child('studentId').val() === auth.uid || data.child('advisorId').val() === auth.uid) && (!newData.exists() || ((newData.child('studentId').val() === auth.uid || newData.child('advisorId').val() === auth.uid) && newData.child('studentId').val() === data.child('studentId').val() && newData.child('advisorId').val() === data.child('advisorId').val() && (newData.child('status').val() === data.child('status').val() || (data.child('advisorId').val() === auth.uid && root.child('users').child(auth.uid).child('role').val() === 'advisor'))))))",
+        "studentId": {
+          ".validate": "newData.isString()"
+        },
+        "advisorId": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": false
+        },
+        ".validate": "newData.hasChildren(['studentId','advisorId','title','description','status'])",
+        "title": {
+          ".validate": "newData.isString()"
+        },
+        "description": {
+          ".validate": "newData.isString()"
+        },
+        "status": {
+          ".validate": "newData.val() === 'proposed' || newData.val() === 'inProgress' || newData.val() === 'completed'"
+        }
+      }
+    },
+    "meetings": {
+      ".indexOn": [
+        "studentId",
+        "advisorId"
+      ],
+      ".read": "auth != null && ((query.orderByChild === 'studentId' || query.orderByChild === 'advisorId') && query.equalTo === auth.uid)",
+      "$id": {
+        ".read": "auth != null && (!data.exists() || data.child('studentId').val() === auth.uid || data.child('advisorId').val() === auth.uid)",
+        ".write": "auth != null && ((!data.exists() && newData.child('studentId').val() === auth.uid && (root.child('users').child(auth.uid).child('role').val() === 'student') && newData.child('advisorId').val() === root.child('students').child(auth.uid).child('advisorId').val() && root.child('users').child(newData.child('advisorId').val()).child('role').val() === 'advisor' && newData.child('status').val() === 'pending') || (data.exists() && (data.child('studentId').val() === auth.uid || data.child('advisorId').val() === auth.uid) && (!newData.exists() || ((newData.child('studentId').val() === auth.uid || newData.child('advisorId').val() === auth.uid) && newData.child('studentId').val() === data.child('studentId').val() && newData.child('advisorId').val() === data.child('advisorId').val() && (newData.child('status').val() === data.child('status').val() || (data.child('advisorId').val() === auth.uid && root.child('users').child(auth.uid).child('role').val() === 'advisor') || newData.child('status').val() === 'cancelled')))))",
+        "studentId": {
+          ".validate": "newData.isString()"
+        },
+        "advisorId": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": false
+        },
+        ".validate": "newData.hasChildren(['studentId','advisorId','scheduledAt','durationMinutes','status','notes'])",
+        "scheduledAt": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "durationMinutes": {
+          ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 480"
+        },
+        "notes": {
+          ".validate": "newData.isString()"
+        },
+        "status": {
+          ".validate": "newData.val() === 'pending' || newData.val() === 'approved' || newData.val() === 'rejected' || newData.val() === 'cancelled' || newData.val() === 'completed'"
+        }
+      }
+    }
+  }
+}

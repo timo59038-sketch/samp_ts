@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "260556728621",
+    "firebase_url": "https://sampts-ea8c4-default-rtdb.firebaseio.com",
+    "project_id": "sampts-ea8c4",
+    "storage_bucket": "sampts-ea8c4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260556728621:android:782d5a005dbce5983c0ba4",
+        "android_client_info": {
+          "package_name": "com.samparts.samp_ts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260556728621-cdq5a2j80072if5h6er6ddpol5avss7b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvCzUF1UWiW3V_GXbIhm1ArqfFirFWCyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260556728621-cdq5a2j80072if5h6er6ddpol5avss7b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
