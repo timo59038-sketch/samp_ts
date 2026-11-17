@@ -35,7 +35,7 @@ SHA-1:   80:44:BE:12:CC:05:D7:50:22:CA:45:5B:E7:F6:1D:12:ED:42:BF:1C
 SHA-256: 9D:62:78:B7:4C:3C:11:65:8C:87:7F:94:72:6C:F2:2A:68:E4:BA:00:A3:27:76:60:16:77:B2:29:2B:14:74:FB
 ```
 
-Other developers and release signing use different certificates. Register those fingerprints separately. The supplied config contains a web OAuth client; the SDK uses it as the server client ID. Successful sign-in must still be checked on an Android device with Google Play services. No live accounts are created by automated tests.
+Other developers and release signing use different certificates. Register those fingerprints separately. The supplied config contains the registered debug Android OAuth client and a web OAuth client; the SDK uses it as the server client ID. Successful sign-in must still be checked on an Android device with Google Play services. No live accounts are created by automated tests.
 
 ## Realtime Database rules
 
@@ -47,7 +47,7 @@ firebase login:use YOUR_EMAIL
 firebase deploy --only database --project sampts-ea8c4
 ```
 
-The previously signed-in CLI account cannot access SAMPTS; these rules have not been deployed. Until deployed, live behavior depends on the rules currently in Firebase Console.
+The tested rules were deployed successfully to `sampts-ea8c4-default-rtdb` on November 17, 2026. Re-run the deployment command after changing the rules.
 
 Rules allow users to provision/update their own profile, prevent self-assignment of advisor roles, restrict projects/meetings to their participants, and restrict milestone/approval changes to the assigned advisor. Student/advisor IDs are Authentication UIDs. Administrators assign `users/{uid}/role = advisor` and `students/{studentUid}/advisorId` in the console or a trusted server. A student can create their own `students/{uid}` record with `userId` and `studentNumber`; assignments cannot be changed by the student.
 
